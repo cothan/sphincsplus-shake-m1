@@ -66,6 +66,12 @@ const uint64_t round_constants[KECCAK_F1600_ROUNDS] =
  *       compilers don't seem to reliably detect potential uses of
  *       EOR-with-ROR and BIC-with-ROR at the time of writing.        */
 
+#if defined(inline)
+#undef inline
+#endif
+
+#define inline __attribute__((unused)) inline
+
 #define GEN_BIC_ROL(imm)                                               \
 static inline uint64_t bic_rol_ ## imm ( uint64_t b, uint64_t a )      \
 {                                                                      \

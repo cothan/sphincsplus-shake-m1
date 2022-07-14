@@ -26,6 +26,8 @@
 // Author: Hanno Becker <hanno.becker@arm.com>
 //
 
+#include "macros.s"
+	
 /********************** CONSTANTS *************************/
     .data
     .align(8)
@@ -345,18 +347,15 @@ round_constants:
 
 .endm
 
-.macro load_constant_ptr
-    adrp const_addr, round_constants
-    add const_addr, const_addr, :lo12:round_constants
-.endm
-
 #define KECCAK_F1600_ROUNDS 24
 
 .text
 .align 4
 .global keccak_f1600_x1_v84a_asm_v2
+.global _keccak_f1600_x1_v84a_asm_v2
 
 keccak_f1600_x1_v84a_asm_v2:
+_keccak_f1600_x1_v84a_asm_v2:	
     alloc_stack
     save_vregs
     load_constant_ptr

@@ -26,6 +26,8 @@
 // Author: Hanno Becker <hanno.becker@arm.com>
 //
 
+#include "macros.s"
+
 /********************** CONSTANTS *************************/
     .data
     .balign 64
@@ -379,18 +381,15 @@ eor Abu, tmp,  Abu_
     restore count, STACK_OFFSET_COUNT
 .endm
 
-.macro load_constant_ptr
-    adrp const_addr, round_constants
-    add const_addr, const_addr, :lo12:round_constants
-.endm
-
 #define KECCAK_F1600_ROUNDS 24
 
 .text
 .balign 16
 .global keccak_f1600_x1_scalar_asm_v1
+.global _keccak_f1600_x1_scalar_asm_v1	
 
 keccak_f1600_x1_scalar_asm_v1:
+_keccak_f1600_x1_scalar_asm_v1:	
     alloc_stack
     save_gprs
     load_constant_ptr

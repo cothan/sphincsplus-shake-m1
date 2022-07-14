@@ -48,12 +48,10 @@ int main(void)
         return( 1 );
     if( validate_keccak_f1600_x1_scalar_asm_v2() != 0 )
         return( 1 );
-
     if( validate_keccak_f1600_x2_v84a_asm_v1() != 0 )
         return( 1 );
     if( validate_keccak_f1600_x2_v84a_asm_v2() != 0 )
         return( 1 );
-
     if( validate_keccak_f1600_x4_scalar_asm_v1() != 0 )
         return( 1 );
     if( validate_keccak_f1600_x4_hybrid_asm_v1() != 0 )

@@ -78,6 +78,12 @@ TEST_ENV_QEMU_V8A_BASE=$(TEST_ENVS_BASE_DIR)/qemu_v8a
 TEST_ENV_QEMU_V8A_SRC=$(TEST_ENV_QEMU_V8A_BASE)/src
 TEST_ENV_QEMU_V8A_SYMLINK=$(TEST_ENV_QEMU_V8A_SRC)/test_src
 
+# Native test environment
+TEST_ENV_NATIVE_BASE=$(TEST_ENVS_BASE_DIR)/native
+TEST_ENV_NATIVE_SRC=$(TEST_ENV_NATIVE_BASE)/src
+TEST_ENV_NATIVE_SYMLINK=$(TEST_ENV_NATIVE_SRC)/test_src
+
+
 # Code generation files
 PYTHON_SRCS=$(wildcard $(CODEGEN_DIR)/*.py)          \
             $(wildcard $(CODEGEN_DIR)/*/*.py)        \
@@ -90,8 +96,10 @@ all: codegen $(TEST_SRC_AUTO_ALL)
 .PHONY: clean
 clean:
 	make clean -C $(TEST_ENV_QEMU_V8A_BASE)
+	make clean -C $(TEST_ENV_NATIVE_BASE)
 	rm -f $(TEST_SRC_AUTO_ALL)
 	rm -f $(TEST_ENV_QEMU_V8A_SYMLINK)
+	rm -f $(TEST_ENV_NATIVE_SYMLINK)
 
 .PHONY: cleanasm
 cleanasm:
@@ -178,3 +186,22 @@ build-qemu-v8a-keccak_neon: $(TEST_ENV_QEMU_V8A_LINK_KECCAK_NEON)
 .PHONY: run-qemu-v8a-keccak_neon
 run-qemu-v8a-keccak_neon: $(TEST_ENV_QEMU_V8A_LINK_KECCAK_NEON)
 	make run -C $(TEST_ENV_QEMU_V8A_BASE)
+
+
+# Keccak native
+
+TEST_ENV_NATIVE_LINK_KECCAK_NEON = $(TEST_ENV_NATIVE_BASE)/test_loaded_keccak_neon
+$(TEST_ENV_NATIVE_LINK_KECCAK_NEON): $(TEST_KECCAK_NEON_SRC_MANUAL)
+	rm -f $(TEST_ENV_NATIVE_SYMLINK)
+	ln -s ../../../$(TEST_KECCAK_NEON_DIR) $(TEST_ENV_NATIVE_SYMLINK)
+	rm -f $(TEST_ENV_NATIVE_BASE)/test_loaded_*
+	make -C $(TEST_ENV_NATIVE_BASE) clean
+	touch $@
+
+.PHONY: build-native-keccak_neon
+build-native-keccak_neon: $(TEST_ENV_NATIVE_LINK_KECCAK_NEON)
+	make -C $(TEST_ENV_NATIVE_BASE)
+
+.PHONY: run-native-keccak_neon
+run-native-keccak_neon: $(TEST_ENV_NATIVE_LINK_KECCAK_NEON)
+	make run -C $(TEST_ENV_NATIVE_BASE)

@@ -26,6 +26,8 @@
 // Author: Hanno Becker <hanno.becker@arm.com>
 //
 
+#include "macros.s"
+
         .data
         .align(8)
 round_constants:
@@ -399,7 +401,7 @@ round_constants:
     bic_rol tmp, Abe_tmp,  Abi_tmp,1
     xor_rol Aba, tmp,      Aba_tmp,43
     bic_rol tmp, Abi_tmp,  Abo_tmp,22
-    xor_rol Abe, Abe_tmp,      tmp 23
+    xor_rol Abe, Abe_tmp,      tmp,23
     bic_rol tmp ,Abo_tmp,  Abu_tmp,7
     xor_rol Abi ,Abi_tmp,      tmp,29
     bic_rol tmp ,Abu_tmp,  Aba_tmp,14
@@ -421,8 +423,8 @@ round_constants:
     .if \is_first == 0
         restore count, STACK_OFFSET_COUNT
     .endif
-    adrp const_addr, round_constants
-    add const_addr, const_addr,:lo12:round_constants
+
+    load_constant_ptr
 
     bic_rol tmp, Ake_tmp, Aki_tmp,45
     xor_rol Aka, Aka_tmp,     tmp,40
@@ -498,10 +500,12 @@ round_constants:
 #define KECCAK_F1600_ROUNDS 24
 
 .global keccak_f1600_x4_scalar_asm_v1
+.global _keccak_f1600_x4_scalar_asm_v1
 .text
 .align 4
 
 keccak_f1600_x4_scalar_asm_v1:
+_keccak_f1600_x4_scalar_asm_v1:
     alloc_stack
     save_gprs
     save input_addr, STACK_OFFSET_INPUT

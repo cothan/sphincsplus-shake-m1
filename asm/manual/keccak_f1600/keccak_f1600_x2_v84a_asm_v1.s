@@ -26,6 +26,8 @@
 // Author: Hanno Becker <hanno.becker@arm.com>
 //
 
+#include "macros.s"
+	
 /********************** CONSTANTS *************************/
     .data
     .align(8)
@@ -216,13 +218,33 @@ round_constants:
     str Asuq, [input_addr, #(2*8*24)]
 .endm
 
-#define STACK_SIZE (16*4) // VREGS (16*4)
+#define STACK_SIZE (16*4 + 16*6) // VREGS (16*4) + GPRS (TODO: Remove)
+	
+#define STACK_BASE_GPRS (16*4)
 .macro alloc_stack
     sub sp, sp, #(STACK_SIZE)
 .endm
 
 .macro free_stack
     add sp, sp, #(STACK_SIZE)
+	.endm
+
+.macro save_gprs
+    stp x19, x20, [sp, #(STACK_BASE_GPRS + 16*0)]
+    stp x21, x22, [sp, #(STACK_BASE_GPRS + 16*1)]
+    stp x23, x24, [sp, #(STACK_BASE_GPRS + 16*2)]
+    stp x25, x26, [sp, #(STACK_BASE_GPRS + 16*3)]
+    stp x27, x28, [sp, #(STACK_BASE_GPRS + 16*4)]
+    stp x29, x30, [sp, #(STACK_BASE_GPRS + 16*5)]
+.endm
+
+.macro restore_gprs
+    ldp x19, x20, [sp, #(STACK_BASE_GPRS + 16*0)]
+    ldp x21, x22, [sp, #(STACK_BASE_GPRS + 16*1)]
+    ldp x23, x24, [sp, #(STACK_BASE_GPRS + 16*2)]
+    ldp x25, x26, [sp, #(STACK_BASE_GPRS + 16*3)]
+    ldp x27, x28, [sp, #(STACK_BASE_GPRS + 16*4)]
+    ldp x29, x30, [sp, #(STACK_BASE_GPRS + 16*5)]
 .endm
 
 .macro save_vregs
@@ -337,19 +359,17 @@ round_constants:
 
 .endm
 
-.macro load_constant_ptr
-    adrp const_addr, round_constants
-    add const_addr, const_addr, :lo12:round_constants
-.endm
-
 #define KECCAK_F1600_ROUNDS 24
 
 .text
 .align 4
 .global keccak_f1600_x1_v84a_asm_v1
+.global _keccak_f1600_x1_v84a_asm_v1	
 
 keccak_f1600_x1_v84a_asm_v1:
+_keccak_f1600_x1_v84a_asm_v1:	
     alloc_stack
+    save_gprs
     save_vregs
     load_constant_ptr
     load_input
@@ -362,5 +382,6 @@ loop:
 
     store_input
     restore_vregs
+    restore_gprs	
     free_stack
     ret
