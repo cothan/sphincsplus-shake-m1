@@ -1,5 +1,6 @@
 /*
- * Copyright (c) 2021 Arm Limited
+ * Copyright (c) 2021-2022 Arm Limited
+ * Copyright (c) 2022 Matthias Kannwischer
  * SPDX-License-Identifier: MIT
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -24,6 +25,7 @@
 
 //
 // Author: Hanno Becker <hanno.becker@arm.com>
+// Author: Matthias Kannwischer <matthias@kannwischer.eu>
 //
 
 #include "macros.s"
@@ -93,7 +95,7 @@ round_constants:
     Asu     .req x25
 
     /* A_[y,2*x+3*y] = rot(A[x,y]) */
-    Aba_ .req x0
+    Aba_ .req x30
     Abe_ .req x28
     Abi_ .req x11
     Abo_ .req x16
@@ -132,7 +134,7 @@ round_constants:
     C4 .req x29
     E4 .req x28
 
-    tmp .req x30
+    tmp .req x0
 
 /************************ MACROS ****************************/
 

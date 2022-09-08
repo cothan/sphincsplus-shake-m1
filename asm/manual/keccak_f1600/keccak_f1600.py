@@ -132,15 +132,21 @@ def eor5(d,s0,s1,s2,s3,s4,
     else:
         rots = [ (i,srot[i]) for i in range(0,5) ]
         rots.sort(key=lambda x:x[1])
-        cur = s[rots[4][0]]
-        for i in [4,3,2,1]:
-            r = (64 - (rots[i][1] - rots[i-1][1]))%64
-            if r != 0:
-                yield f"eor {d}, {s[rots[i-1][0]]}, {cur}, ROR #{r}"
-            else:
-                yield f"eor {d}, {s[rots[i-1][0]]}, {cur}"
-            cur = d
         print(f"// EOR5: {s}, {rots}")
+        # cur = s[rots[4][0]]
+        # for i in [4,3,2,1]:
+        #     print(f"// Current delayed rotations: {rots[i][1]}, {rots[i-1][1]}")
+        #     r = (64 - (rots[i][1] - rots[i-1][1]))%64
+        #     if r != 0:
+        #         yield f"eor {d}, {s[rots[i-1][0]]}, {cur}, ROR #{r}"
+        #     else:
+        #         yield f"eor {d}, {s[rots[i-1][0]]}, {cur}"
+        #     cur = d
+        cur = s[rots[0][0]]
+        for i in [1,2,3,4]:
+            r = (64 - (rots[i][1] - rots[0][1]))%64
+            yield f"eor {d}, {cur}, {s[rots[i][0]]}, ROR #{r}"
+            cur = d
         if rots[0][1] != 0:
             yield f"ror {cur}, {cur}, {(64-rots[0][1])%64}"
         # yield f"eor {d}, {s0}, {s1}"

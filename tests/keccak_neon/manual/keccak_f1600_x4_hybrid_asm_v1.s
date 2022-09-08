@@ -1,5 +1,6 @@
 /*
- * Copyright (c) 2021 Arm Limited
+ * Copyright (c) 2021-2022 Arm Limited
+ * Copyright (c) 2022 Matthias Kannwischer
  * SPDX-License-Identifier: MIT
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -24,10 +25,13 @@
 
 //
 // Author: Hanno Becker <hanno.becker@arm.com>
+// Author: Matthias Kannwischer <matthias@kannwischer.eu>
 //
 
 #include "macros.s"
-	
+
+#if defined(__ARM_FEATURE_SHA3)
+
 /********************** CONSTANTS *************************/
     .data
     .align(8)
@@ -396,10 +400,10 @@ round_constants:
 .endm
 
 .macro restore_vregs
-    ldp d14, d15, [sp,#(STACK_BASE_VREGS+0*16)]
-    ldp d12, d13, [sp,#(STACK_BASE_VREGS+1*16)]
-    ldp d10, d11, [sp,#(STACK_BASE_VREGS+2*16)]
-    ldp d8,  d9,  [sp,#(STACK_BASE_VREGS+3*16)]
+    ldp d14, d15, [sp,#(STACK_BASE_VREGS+3*16)]
+    ldp d12, d13, [sp,#(STACK_BASE_VREGS+2*16)]
+    ldp d10, d11, [sp,#(STACK_BASE_VREGS+1*16)]
+    ldp d8,  d9,  [sp,#(STACK_BASE_VREGS+0*16)]
 .endm
 
 .macro alloc_stack
@@ -1134,3 +1138,5 @@ _keccak_f1600_x4_hybrid_asm_v1:
     restore_gprs
     free_stack
     ret
+
+#endif

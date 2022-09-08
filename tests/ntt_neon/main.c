@@ -27,8 +27,9 @@
 #include <string.h>
 #include <stdarg.h>
 
+#include <hal.h>
+
 #include "ntt.h"
-#include "cycles.h"
 
 int main(void)
 {

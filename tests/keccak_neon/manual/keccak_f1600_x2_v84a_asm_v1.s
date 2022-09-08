@@ -1,5 +1,6 @@
 /*
- * Copyright (c) 2021 Arm Limited
+ * Copyright (c) 2021-2022 Arm Limited
+ * Copyright (c) 2022 Matthias Kannwischer
  * SPDX-License-Identifier: MIT
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -24,10 +25,13 @@
 
 //
 // Author: Hanno Becker <hanno.becker@arm.com>
+// Author: Matthias Kannwischer <matthias@kannwischer.eu>
 //
 
 #include "macros.s"
-	
+
+#if defined(__ARM_FEATURE_SHA3)
+
 /********************** CONSTANTS *************************/
     .data
     .align(8)
@@ -163,63 +167,28 @@ round_constants:
 /************************ MACROS ****************************/
 
 .macro load_input
-    ldr Abaq, [input_addr, #(2*8*0)]
-    ldr Abeq, [input_addr, #(2*8*1)]
-    ldr Abiq, [input_addr, #(2*8*2)]
-    ldr Aboq, [input_addr, #(2*8*3)]
-    ldr Abuq, [input_addr, #(2*8*4)]
-    ldr Agaq, [input_addr, #(2*8*5)]
-    ldr Ageq, [input_addr, #(2*8*6)]
-    ldr Agiq, [input_addr, #(2*8*7)]
-    ldr Agoq, [input_addr, #(2*8*8)]
-    ldr Aguq, [input_addr, #(2*8*9)]
-    ldr Akaq, [input_addr, #(2*8*10)]
-    ldr Akeq, [input_addr, #(2*8*11)]
-    ldr Akiq, [input_addr, #(2*8*12)]
-    ldr Akoq, [input_addr, #(2*8*13)]
-    ldr Akuq, [input_addr, #(2*8*14)]
-    ldr Amaq, [input_addr, #(2*8*15)]
-    ldr Ameq, [input_addr, #(2*8*16)]
-    ldr Amiq, [input_addr, #(2*8*17)]
-    ldr Amoq, [input_addr, #(2*8*18)]
-    ldr Amuq, [input_addr, #(2*8*19)]
-    ldr Asaq, [input_addr, #(2*8*20)]
-    ldr Aseq, [input_addr, #(2*8*21)]
-    ldr Asiq, [input_addr, #(2*8*22)]
-    ldr Asoq, [input_addr, #(2*8*23)]
-    ldr Asuq, [input_addr, #(2*8*24)]
+    ld1 {Aba.2d, Abe.2d, Abi.2d, Abo.2d}, [input_addr], #64
+    ld1 {Abu.2d, Aga.2d, Age.2d, Agi.2d}, [input_addr], #64
+    ld1 {Ago.2d, Agu.2d, Aka.2d, Ake.2d}, [input_addr], #64
+    ld1 {Aki.2d, Ako.2d, Aku.2d, Ama.2d}, [input_addr], #64
+    ld1 {Ame.2d, Ami.2d, Amo.2d, Amu.2d}, [input_addr], #64
+    ld1 {Asa.2d, Ase.2d, Asi.2d, Aso.2d}, [input_addr], #64
+    ld1 {Asu.2d}, [input_addr]
+    sub input_addr, input_addr, #(6*64)
 .endm
 
 .macro store_input
-    str Abaq, [input_addr, #(2*8*0)]
-    str Abeq, [input_addr, #(2*8*1)]
-    str Abiq, [input_addr, #(2*8*2)]
-    str Aboq, [input_addr, #(2*8*3)]
-    str Abuq, [input_addr, #(2*8*4)]
-    str Agaq, [input_addr, #(2*8*5)]
-    str Ageq, [input_addr, #(2*8*6)]
-    str Agiq, [input_addr, #(2*8*7)]
-    str Agoq, [input_addr, #(2*8*8)]
-    str Aguq, [input_addr, #(2*8*9)]
-    str Akaq, [input_addr, #(2*8*10)]
-    str Akeq, [input_addr, #(2*8*11)]
-    str Akiq, [input_addr, #(2*8*12)]
-    str Akoq, [input_addr, #(2*8*13)]
-    str Akuq, [input_addr, #(2*8*14)]
-    str Amaq, [input_addr, #(2*8*15)]
-    str Ameq, [input_addr, #(2*8*16)]
-    str Amiq, [input_addr, #(2*8*17)]
-    str Amoq, [input_addr, #(2*8*18)]
-    str Amuq, [input_addr, #(2*8*19)]
-    str Asaq, [input_addr, #(2*8*20)]
-    str Aseq, [input_addr, #(2*8*21)]
-    str Asiq, [input_addr, #(2*8*22)]
-    str Asoq, [input_addr, #(2*8*23)]
-    str Asuq, [input_addr, #(2*8*24)]
+    st1 {Aba.2d, Abe.2d, Abi.2d, Abo.2d}, [input_addr], #64
+    st1 {Abu.2d, Aga.2d, Age.2d, Agi.2d}, [input_addr], #64
+    st1 {Ago.2d, Agu.2d, Aka.2d, Ake.2d}, [input_addr], #64
+    st1 {Aki.2d, Ako.2d, Aku.2d, Ama.2d}, [input_addr], #64
+    st1 {Ame.2d, Ami.2d, Amo.2d, Amu.2d}, [input_addr], #64
+    st1 {Asa.2d, Ase.2d, Asi.2d, Aso.2d}, [input_addr], #64
+    st1 {Asu.2d}, [input_addr]
 .endm
 
 #define STACK_SIZE (16*4 + 16*6) // VREGS (16*4) + GPRS (TODO: Remove)
-	
+
 #define STACK_BASE_GPRS (16*4)
 .macro alloc_stack
     sub sp, sp, #(STACK_SIZE)
@@ -228,24 +197,6 @@ round_constants:
 .macro free_stack
     add sp, sp, #(STACK_SIZE)
 	.endm
-
-.macro save_gprs
-    stp x19, x20, [sp, #(STACK_BASE_GPRS + 16*0)]
-    stp x21, x22, [sp, #(STACK_BASE_GPRS + 16*1)]
-    stp x23, x24, [sp, #(STACK_BASE_GPRS + 16*2)]
-    stp x25, x26, [sp, #(STACK_BASE_GPRS + 16*3)]
-    stp x27, x28, [sp, #(STACK_BASE_GPRS + 16*4)]
-    stp x29, x30, [sp, #(STACK_BASE_GPRS + 16*5)]
-.endm
-
-.macro restore_gprs
-    ldp x19, x20, [sp, #(STACK_BASE_GPRS + 16*0)]
-    ldp x21, x22, [sp, #(STACK_BASE_GPRS + 16*1)]
-    ldp x23, x24, [sp, #(STACK_BASE_GPRS + 16*2)]
-    ldp x25, x26, [sp, #(STACK_BASE_GPRS + 16*3)]
-    ldp x27, x28, [sp, #(STACK_BASE_GPRS + 16*4)]
-    ldp x29, x30, [sp, #(STACK_BASE_GPRS + 16*5)]
-.endm
 
 .macro save_vregs
     stp  d8,  d9, [sp, #(16*0)]
@@ -284,14 +235,14 @@ round_constants:
 .macro keccak_f1600_round
 
     eor3_m0 C0, Aba, Aga, Aka
-    eor3_m0 C0, C0, Ama,  Asa
     eor3_m0 C1, Abe, Age, Ake
-    eor3_m0 C1, C1, Ame,  Ase
     eor3_m0 C2, Abi, Agi, Aki
-    eor3_m0 C2, C2, Ami,  Asi
     eor3_m0 C3, Abo, Ago, Ako
-    eor3_m0 C3, C3, Amo,  Aso
     eor3_m0 C4, Abu, Agu, Aku
+    eor3_m0 C0, C0, Ama,  Asa
+    eor3_m0 C1, C1, Ame,  Ase
+    eor3_m0 C2, C2, Ami,  Asi
+    eor3_m0 C3, C3, Amo,  Aso
     eor3_m0 C4, C4, Amu,  Asu
 
     rax1_m0 E1, C0, C2
@@ -363,13 +314,12 @@ round_constants:
 
 .text
 .align 4
-.global keccak_f1600_x1_v84a_asm_v1
-.global _keccak_f1600_x1_v84a_asm_v1	
+.global keccak_f1600_x2_v84a_asm_v1
+.global _keccak_f1600_x2_v84a_asm_v1
 
-keccak_f1600_x1_v84a_asm_v1:
-_keccak_f1600_x1_v84a_asm_v1:	
+keccak_f1600_x2_v84a_asm_v1:
+_keccak_f1600_x2_v84a_asm_v1:
     alloc_stack
-    save_gprs
     save_vregs
     load_constant_ptr
     load_input
@@ -382,6 +332,7 @@ loop:
 
     store_input
     restore_vregs
-    restore_gprs	
     free_stack
     ret
+
+#endif

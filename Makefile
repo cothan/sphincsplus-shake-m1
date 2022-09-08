@@ -74,9 +74,9 @@ TEST_SRC_AUTO_ALL= $(TEST_NTT_NEON_SRC_AUTO) $(TEST_KECCAK_NEON_SRC_MANUAL)
 TEST_ENVS_BASE_DIR=envs
 
 # QEMU test environment
-TEST_ENV_QEMU_V8A_BASE=$(TEST_ENVS_BASE_DIR)/qemu_v8a
-TEST_ENV_QEMU_V8A_SRC=$(TEST_ENV_QEMU_V8A_BASE)/src
-TEST_ENV_QEMU_V8A_SYMLINK=$(TEST_ENV_QEMU_V8A_SRC)/test_src
+TEST_ENV_CROSS_BASE=$(TEST_ENVS_BASE_DIR)/cross
+TEST_ENV_CROSS_SRC=$(TEST_ENV_CROSS_BASE)/src
+TEST_ENV_CROSS_SYMLINK=$(TEST_ENV_CROSS_SRC)/test_src
 
 # Native test environment
 TEST_ENV_NATIVE_BASE=$(TEST_ENVS_BASE_DIR)/native
@@ -95,10 +95,10 @@ all: codegen $(TEST_SRC_AUTO_ALL)
 
 .PHONY: clean
 clean:
-	make clean -C $(TEST_ENV_QEMU_V8A_BASE)
+	make clean -C $(TEST_ENV_CROSS_BASE)
 	make clean -C $(TEST_ENV_NATIVE_BASE)
 	rm -f $(TEST_SRC_AUTO_ALL)
-	rm -f $(TEST_ENV_QEMU_V8A_SYMLINK)
+	rm -f $(TEST_ENV_CROSS_SYMLINK)
 	rm -f $(TEST_ENV_NATIVE_SYMLINK)
 
 .PHONY: cleanasm
@@ -129,63 +129,63 @@ $(TEST_KECCAK_NEON_SRC_MANUAL): $(TEST_KECCAK_NEON_SOURCES_MANUAL_DIR)/%.h: $(MA
 codegen:
 	make codegen -C $(CODEGEN_DIR)
 
-# Template on QEMU-V8A
+# Template on CROSS
 
-TEST_ENV_QEMU_V8A_LINK_HELLOWORLD = $(TEST_ENV_QEMU_V8A_BASE)/test_loaded_helloworld
-$(TEST_ENV_QEMU_V8A_LINK_HELLOWORLD):
-	rm -f $(TEST_ENV_QEMU_V8A_SYMLINK)
-	ln -s ../../../$(TEST_HELLOWORLD_DIR) $(TEST_ENV_QEMU_V8A_SYMLINK)
-	rm -f $(TEST_ENV_QEMU_V8A_BASE)/test_loaded_*
-	make -C $(TEST_ENV_QEMU_V8A_BASE) clean
+TEST_ENV_CROSS_LINK_HELLOWORLD = $(TEST_ENV_CROSS_BASE)/test_loaded_helloworld
+$(TEST_ENV_CROSS_LINK_HELLOWORLD):
+	rm -f $(TEST_ENV_CROSS_SYMLINK)
+	ln -s ../../../$(TEST_HELLOWORLD_DIR) $(TEST_ENV_CROSS_SYMLINK)
+	rm -f $(TEST_ENV_CROSS_BASE)/test_loaded_*
+	make -C $(TEST_ENV_CROSS_BASE) clean
 	touch $@
 
-.PHONY: build-qemu-v8a-helloworld
-build-qemu-v8a-helloworld: $(TEST_ENV_QEMU_V8A_LINK_HELLOWORLD)
-	make -C $(TEST_ENV_QEMU_V8A_BASE)
+.PHONY: build-cross-helloworld
+build-cross-helloworld: $(TEST_ENV_CROSS_LINK_HELLOWORLD)
+	make -C $(TEST_ENV_CROSS_BASE)
 
-.PHONY: run-qemu-v8a-helloworld
-run-qemu-v8a-helloworld: $(TEST_ENV_QEMU_V8A_LINK_HELLOWORLD)
-	make run -C $(TEST_ENV_QEMU_V8A_BASE)
+.PHONY: run-cross-helloworld
+run-cross-helloworld: $(TEST_ENV_CROSS_LINK_HELLOWORLD)
+	make run -C $(TEST_ENV_CROSS_BASE)
 
-# NTT test on QEMU-v8a
+# NTT test on cross
 
-TEST_ENV_QEMU_V8A_LINK_NTT_NEON = $(TEST_ENV_QEMU_V8A_BASE)/test_loaded_ntt_neon
-$(TEST_ENV_QEMU_V8A_LINK_NTT_NEON): $(TEST_NTT_NEON_SRC_AUTO)
-	rm -f $(TEST_ENV_QEMU_V8A_SYMLINK)
-	ln -s ../../../$(TEST_NTT_NEON_DIR) $(TEST_ENV_QEMU_V8A_SYMLINK)
-	rm -f $(TEST_ENV_QEMU_V8A_BASE)/test_loaded_*
-	make -C $(TEST_ENV_QEMU_V8A_BASE) clean
+TEST_ENV_CROSS_LINK_NTT_NEON = $(TEST_ENV_CROSS_BASE)/test_loaded_ntt_neon
+$(TEST_ENV_CROSS_LINK_NTT_NEON): $(TEST_NTT_NEON_SRC_AUTO)
+	rm -f $(TEST_ENV_CROSS_SYMLINK)
+	ln -s ../../../$(TEST_NTT_NEON_DIR) $(TEST_ENV_CROSS_SYMLINK)
+	rm -f $(TEST_ENV_CROSS_BASE)/test_loaded_*
+	make -C $(TEST_ENV_CROSS_BASE) clean
 	touch $@
 
-.PHONY: build-qemu-v8a-ntt_neon
-build-qemu-v8a-ntt_neon: $(TEST_ENV_QEMU_V8A_LINK_NTT_NEON)
-	make -C $(TEST_ENV_QEMU_V8A_BASE)
+.PHONY: build-cross-ntt_neon
+build-cross-ntt_neon: $(TEST_ENV_CROSS_LINK_NTT_NEON)
+	make -C $(TEST_ENV_CROSS_BASE)
 
-.PHONY: run-qemu-v8a-ntt_neon
-run-qemu-v8a-ntt_neon: $(TEST_ENV_QEMU_V8A_LINK_NTT_NEON)
-	make run -C $(TEST_ENV_QEMU_V8A_BASE)
+.PHONY: run-cross-ntt_neon
+run-cross-ntt_neon: $(TEST_ENV_CROSS_LINK_NTT_NEON)
+	make run -C $(TEST_ENV_CROSS_BASE)
 
-.PHONY: debug-qemu-v8a-ntt_neon
-debug-qemu-v8a-ntt_neon: $(TEST_ENV_QEMU_V8A_LINK_NTT_NEON)
-	make debug -C $(TEST_ENV_QEMU_V8A_BASE)
+.PHONY: debug-cross-ntt_neon
+debug-cross-ntt_neon: $(TEST_ENV_CROSS_LINK_NTT_NEON)
+	make debug -C $(TEST_ENV_CROSS_BASE)
 
-# Keccak on QEMU-V8A
+# Keccak on CROSS
 
-TEST_ENV_QEMU_V8A_LINK_KECCAK_NEON = $(TEST_ENV_QEMU_V8A_BASE)/test_loaded_keccak_neon
-$(TEST_ENV_QEMU_V8A_LINK_KECCAK_NEON): $(TEST_KECCAK_NEON_SRC_MANUAL)
-	rm -f $(TEST_ENV_QEMU_V8A_SYMLINK)
-	ln -s ../../../$(TEST_KECCAK_NEON_DIR) $(TEST_ENV_QEMU_V8A_SYMLINK)
-	rm -f $(TEST_ENV_QEMU_V8A_BASE)/test_loaded_*
-	make -C $(TEST_ENV_QEMU_V8A_BASE) clean
+TEST_ENV_CROSS_LINK_KECCAK_NEON = $(TEST_ENV_CROSS_BASE)/test_loaded_keccak_neon
+$(TEST_ENV_CROSS_LINK_KECCAK_NEON): $(TEST_KECCAK_NEON_SRC_MANUAL)
+	rm -f $(TEST_ENV_CROSS_SYMLINK)
+	ln -s ../../../$(TEST_KECCAK_NEON_DIR) $(TEST_ENV_CROSS_SYMLINK)
+	rm -f $(TEST_ENV_CROSS_BASE)/test_loaded_*
+	make -C $(TEST_ENV_CROSS_BASE) clean
 	touch $@
 
-.PHONY: build-qemu-v8a-keccak_neon
-build-qemu-v8a-keccak_neon: $(TEST_ENV_QEMU_V8A_LINK_KECCAK_NEON)
-	make -C $(TEST_ENV_QEMU_V8A_BASE)
+.PHONY: build-cross-keccak_neon
+build-cross-keccak_neon: $(TEST_ENV_CROSS_LINK_KECCAK_NEON)
+	make -C $(TEST_ENV_CROSS_BASE)
 
-.PHONY: run-qemu-v8a-keccak_neon
-run-qemu-v8a-keccak_neon: $(TEST_ENV_QEMU_V8A_LINK_KECCAK_NEON)
-	make run -C $(TEST_ENV_QEMU_V8A_BASE)
+.PHONY: run-cross-keccak_neon
+run-cross-keccak_neon: $(TEST_ENV_CROSS_LINK_KECCAK_NEON)
+	make run -C $(TEST_ENV_CROSS_BASE)
 
 
 # Keccak native

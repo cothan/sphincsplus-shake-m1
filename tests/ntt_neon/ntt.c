@@ -31,7 +31,6 @@
 
 #include "ntt.h"
 #include "misc.h"
-#include "cycles.h"
 
 //#define CONFIG_TEST_NTT_VERBOSE
 

@@ -1,5 +1,6 @@
 /*
- * Copyright (c) 2021 Arm Limited
+ * Copyright (c) 2021-2022 Arm Limited
+ * Copyright (c) 2022 Matthias Kannwischer
  * SPDX-License-Identifier: MIT
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -24,10 +25,13 @@
 
 //
 // Author: Hanno Becker <hanno.becker@arm.com>
+// Author: Matthias Kannwischer <matthias@kannwischer.eu>
 //
 
 #include "macros.s"
-	
+
+#if defined(__ARM_FEATURE_SHA3)
+
 /********************** CONSTANTS *************************/
     .data
     .align(8)
@@ -245,20 +249,20 @@ round_constants:
 .endm
 
 .macro rax1_m1 d s0 s1
-   add vtmp.2d, \s1\().2d, \s1\().2d 
-   sri vtmp.2d, \s1\().2d, #63       
-   eor \d\().16b, vtmp.16b, \s0\().16b 
+   add vtmp.2d, \s1\().2d, \s1\().2d
+   sri vtmp.2d, \s1\().2d, #63
+   eor \d\().16b, vtmp.16b, \s0\().16b
 .endm
 
 .macro xar_m1 d s0 s1 imm
-   eor vtmp.16b, \s0\().16b, \s1\().16b 
-   shl \d\().2d, vtmp.2d, #(64-\imm)    
-   sri \d\().2d, vtmp.2d, #(\imm)       
+   eor vtmp.16b, \s0\().16b, \s1\().16b
+   shl \d\().2d, vtmp.2d, #(64-\imm)
+   sri \d\().2d, vtmp.2d, #(\imm)
 .endm
 
 .macro bcax_m1 d s0 s1 s2
-    bic vtmp.16b, \s1\().16b, \s2\().16b 
-    eor \d\().16b, vtmp.16b, \s0\().16b  
+    bic vtmp.16b, \s1\().16b, \s2\().16b
+    eor \d\().16b, vtmp.16b, \s0\().16b
 .endm
 
 .macro eor3_m0 d s0 s1 s2
@@ -423,10 +427,10 @@ round_constants:
 .endm
 
 .macro restore_vregs
-    ldp d14, d15, [sp,#(STACK_BASE_VREGS+0*16)]
-    ldp d12, d13, [sp,#(STACK_BASE_VREGS+1*16)]
-    ldp d10, d11, [sp,#(STACK_BASE_VREGS+2*16)]
-    ldp d8,  d9,  [sp,#(STACK_BASE_VREGS+3*16)]
+    ldp d14, d15, [sp,#(STACK_BASE_VREGS+3*16)]
+    ldp d12, d13, [sp,#(STACK_BASE_VREGS+2*16)]
+    ldp d10, d11, [sp,#(STACK_BASE_VREGS+1*16)]
+    ldp d8,  d9,  [sp,#(STACK_BASE_VREGS+0*16)]
 .endm
 
 .macro alloc_stack
@@ -519,7 +523,7 @@ round_constants:
    eor sAme_, sAga, sE0                             SEP       xar_m0 vAsa_, vAbi, E2, 2
    eor sAbe_, sAge, sE1                             SEP
                                                     SEP
-   load_constant_ptr                                SEP       xar_m1 vAbi_, vAki, E2, 21 
+   load_constant_ptr                                SEP       xar_m1 vAbi_, vAki, E2, 21
                                                     SEP
    bic tmp, sAgi_, sAge_, ROR #47                   SEP
    eor sAga, tmp,  sAga_, ROR #39                   SEP       xar_m0 vAki_, vAko, E3, 39
@@ -1010,3 +1014,5 @@ _keccak_f1600_x4_hybrid_asm_v4:
     restore_gprs
     free_stack
     ret
+
+#endif

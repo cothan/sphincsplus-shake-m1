@@ -34,23 +34,6 @@ extern void rand_init( unsigned long seed );
 /* Request random data. */
 extern uint8_t get_random_byte();
 
-/* Stubs to enable/disable measurements.
- *
- * Those stubs can either be defined as macros (which is especially
- * useful when measurement shall be disabled and we don't want to
- * waste code space) or as externally defined functions.
- * In case no measurements are desired, just put
- * ```
- *    #define measure_start() do {} while( 0 )
- *    #define measure_end()   do {} while( 0 )
- * ```
- * in hal_env.h.
- **/
-#if !defined(TESTS_HAL_MEASURE_MACRO)
-extern void measure_start();
-extern void measure_end();
-#endif /* TESTS_HAL_MEASURE_MACRO */
-
 /* Debugging stubs
  *
  * Those stubs can either be defined as macros (which is especially
@@ -71,5 +54,9 @@ extern void debug_printf(const char * restrict format, ... );
 extern void debug_test_ok();
 extern void debug_test_fail();
 #endif /* TESTS_HAL_DEBUG_MACRO */
+
+void enable_cyclecounter();
+void disable_cyclecounter();
+uint64_t get_cyclecounter();
 
 #endif /* TESTS_HAL_H */

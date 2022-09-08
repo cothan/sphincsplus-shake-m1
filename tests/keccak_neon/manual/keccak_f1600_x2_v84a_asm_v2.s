@@ -1,5 +1,6 @@
 /*
- * Copyright (c) 2021 Arm Limited
+ * Copyright (c) 2021-2022 Arm Limited
+ * Copyright (c) 2022 Matthias Kannwischer
  * SPDX-License-Identifier: MIT
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -24,10 +25,11 @@
 
 //
 // Author: Hanno Becker <hanno.becker@arm.com>
+// Author: Matthias Kannwischer <matthias@kannwischer.eu>
 //
 
 #include "macros.s"
-	
+
 /********************** CONSTANTS *************************/
     .data
     .align(8)
@@ -252,7 +254,7 @@ round_constants:
 .endm
 
 .macro rax1_m1 d s0 s1
-   add tmp.2d, \s1\().2d, \s1\().2d
+   shl tmp.2d, \s1\().2d, #1
    sri tmp.2d, \s1\().2d, #63
    eor \d\().16b, tmp.16b, \s0\().16b
 .endm
@@ -351,11 +353,11 @@ round_constants:
 
 .text
 .align 4
-.global keccak_f1600_x1_v84a_asm_v2
-.global _keccak_f1600_x1_v84a_asm_v2
+.global keccak_f1600_x2_v84a_asm_v2
+.global _keccak_f1600_x2_v84a_asm_v2
 
-keccak_f1600_x1_v84a_asm_v2:
-_keccak_f1600_x1_v84a_asm_v2:	
+keccak_f1600_x2_v84a_asm_v2:
+_keccak_f1600_x2_v84a_asm_v2:
     alloc_stack
     save_vregs
     load_constant_ptr
