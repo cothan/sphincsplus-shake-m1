@@ -3,9 +3,11 @@ CODEGEN_DIR=asm
 
 MANUAL_SRCS_DIR=$(CODEGEN_DIR)/manual
 MANUAL_SRCS_KECCAK_NEON_DIR=$(MANUAL_SRCS_DIR)/keccak_f1600
+MANUAL_SRCS_BASEMUL_S64_DIR=$(MANUAL_SRCS_DIR)/basemul_s64
 
 AUTOGEN_SRCS_DIR=$(CODEGEN_DIR)/auto
 AUTOGEN_SRCS_NTT_NEON_DIR=$(AUTOGEN_SRCS_DIR)/ntt_neon
+AUTOGEN_SRCS_NTT_SVE2_DIR=$(AUTOGEN_SRCS_DIR)/ntt_sve2
 
 AUTOGEN_SRCS_ALL=$(wildcard $(AUTOGEN_SRCS_DIR)/*.s)     \
                  $(wildcard $(AUTOGEN_SRCS_DIR)/*/*.s)   \
@@ -21,6 +23,13 @@ AUTOGEN_SRCS_NTT_NEON_ALL=$(wildcard $(AUTOGEN_SRCS_NTT_NEON_DIR)/*.s)     \
                           $(wildcard $(AUTOGEN_SRCS_NTT_NEON_DIR)/*/*.s)   \
                           $(wildcard $(AUTOGEN_SRCS_NTT_NEON_DIR)/*/*/*.s) \
                           $(wildcard $(AUTOGEN_SRCS_NTT_NEON_DIR)/*/*/*/*.s)
+
+AUTOGEN_SRCS_NTT_SVE2_ALL=$(wildcard $(AUTOGEN_SRCS_NTT_SVE2_DIR)/*.s)     \
+                          $(wildcard $(AUTOGEN_SRCS_NTT_SVE2_DIR)/*/*.s)   \
+                          $(wildcard $(AUTOGEN_SRCS_NTT_SVE2_DIR)/*/*/*.s) \
+                          $(wildcard $(AUTOGEN_SRCS_NTT_SVE2_DIR)/*/*/*/*.s)
+
+MANUAL_SRCS_NTT_SVE2_ALL=$(wildcard $(MANUAL_SRCS_BASEMUL_S64_DIR)/*.[sch])
 
 MANUAL_SRCS_KECCAK_NEON_ALL=$(wildcard $(MANUAL_SRCS_KECCAK_NEON_DIR)/*.[sch])     \
                       $(wildcard $(MANUAL_SRCS_KECCAK_NEON_DIR)/*/*.[sch])   \
@@ -45,6 +54,20 @@ TEST_NTT_NEON_SRC_AUTO=$(patsubst $(AUTOGEN_SRCS_NTT_NEON_DIR)/%.s,      \
                                   $(TEST_NTT_NEON_SOURCES_AUTO_DIR)/%.s, \
                                   $(AUTOGEN_SRCS_NTT_NEON_ALL))
 TEST_NTT_NEON_SRC_ALL=$(TEST_NTT_NEON_SRC_C) $(TEST_NTT_NEON_SRC_AUTO)
+
+# Directory and sources for SVE2-NTT test
+TEST_NTT_SVE2_DIR=$(TEST_BASE_DIR)/ntt_sve2
+TEST_NTT_SVE2_SOURCES_AUTO_DIR=$(TEST_NTT_SVE2_DIR)/auto
+TEST_NTT_SVE2_SOURCES_MANUAL_DIR=$(TEST_NTT_SVE2_DIR)/manual
+TEST_NTT_SVE2_SRC_C=$(wildcard $(TEST_NTT_SVE2_DIR)/*.c) \
+                    $(wildcard $(TEST_NTT_SVE2_DIR)/*/*.c)
+TEST_NTT_SVE2_SRC_AUTO=$(patsubst $(AUTOGEN_SRCS_NTT_SVE2_DIR)/%.s,      \
+                                  $(TEST_NTT_SVE2_SOURCES_AUTO_DIR)/%.s, \
+                                  $(AUTOGEN_SRCS_NTT_SVE2_ALL))
+TEST_NTT_SVE2_SRC_MANUAL=$(patsubst $(MANUAL_SRCS_BASEMUL_S64_DIR)/%.s,      \
+                                  $(TEST_NTT_SVE2_SOURCES_MANUAL_DIR)/%.s, \
+                                  $(MANUAL_SRCS_NTT_SVE2_ALL))
+TEST_NTT_SVE2_SRC_ALL=$(TEST_NTT_SVE2_SRC_C) $(TEST_NTT_SVE2_SRC_AUTO) $(TEST_NTT_SVE2_SRC_MANUAL)
 
 # Directory and sources for KECCAK test
 TEST_KECCAK_NEON_DIR=$(TEST_BASE_DIR)/keccak_neon
@@ -100,6 +123,8 @@ clean:
 	rm -f $(TEST_SRC_AUTO_ALL)
 	rm -f $(TEST_ENV_CROSS_SYMLINK)
 	rm -f $(TEST_ENV_NATIVE_SYMLINK)
+	rm -f $(TEST_ENV_CROSS_BASE)/test_loaded_*
+	rm -f $(TEST_ENV_NATIVE_BASE)/test_loaded_*
 
 .PHONY: cleanasm
 cleanasm:
@@ -112,6 +137,15 @@ $(AUTOGEN_SRCS_ALL): $(PYTHON_SRCS)
 	make -C $(CODEGEN_DIR)
 
 $(TEST_NTT_NEON_SRC_AUTO): $(TEST_NTT_NEON_SOURCES_AUTO_DIR)/%.s: $(AUTOGEN_SRCS_NTT_NEON_DIR)/%.s
+	mkdir -p $(@D)
+	cp $< $@
+
+$(TEST_NTT_SVE2_SRC_AUTO): $(TEST_NTT_SVE2_SOURCES_AUTO_DIR)/%.s: $(AUTOGEN_SRCS_NTT_SVE2_DIR)/%.s
+	mkdir -p $(@D)
+	cp $< $@
+$(info XXX: $(TEST_NTT_SVE2_SRC_MANUAL))
+$(info YYY: $(TEST_NTT_SVE2_SRC_MANUAL))
+$(TEST_NTT_SVE2_SRC_MANUAL): $(TEST_NTT_SVE2_SOURCES_MANUAL_DIR)/%.s: $(MANUAL_SRCS_BASEMUL_S64_DIR)/%.s
 	mkdir -p $(@D)
 	cp $< $@
 
@@ -187,9 +221,29 @@ build-cross-keccak_neon: $(TEST_ENV_CROSS_LINK_KECCAK_NEON)
 run-cross-keccak_neon: $(TEST_ENV_CROSS_LINK_KECCAK_NEON)
 	make run -C $(TEST_ENV_CROSS_BASE)
 
+# NTT-SVE2 test on CROSS
+
+TEST_ENV_CROSS_LINK_NTT_SVE2 = $(TEST_ENV_CROSS_BASE)/test_loaded_ntt_sve2
+$(TEST_ENV_CROSS_LINK_NTT_SVE2): $(TEST_NTT_SVE2_SRC_AUTO) $(TEST_NTT_SVE2_SRC_MANUAL)
+	rm -f $(TEST_ENV_CROSS_SYMLINK)
+	ln -s ../../../$(TEST_NTT_SVE2_DIR) $(TEST_ENV_CROSS_SYMLINK)
+	rm -f $(TEST_ENV_CROSS_BASE)/test_loaded_*
+	make -C $(TEST_ENV_CROSS_BASE) clean
+	touch $@
+
+.PHONY: build-cross-ntt_sve2
+build-cross-ntt_sve2: $(TEST_ENV_CROSS_LINK_NTT_SVE2)
+	PLATFORM=v84a make -C $(TEST_ENV_CROSS_BASE)
+
+.PHONY: run-cross-ntt_sve2
+run-cross-ntt_sve2: $(TEST_ENV_CROSS_LINK_NTT_SVE2)
+	make run -C $(TEST_ENV_CROSS_BASE)
+
+.PHONY: debug-cross-ntt_sve2
+debug-cross-ntt_sve2: $(TEST_ENV_CROSS_LINK_NTT_SVE2)
+	make debug -C $(TEST_ENV_CROSS_BASE)
 
 # Keccak native
-
 TEST_ENV_NATIVE_LINK_KECCAK_NEON = $(TEST_ENV_NATIVE_BASE)/test_loaded_keccak_neon
 $(TEST_ENV_NATIVE_LINK_KECCAK_NEON): $(TEST_KECCAK_NEON_SRC_MANUAL)
 	rm -f $(TEST_ENV_NATIVE_SYMLINK)
