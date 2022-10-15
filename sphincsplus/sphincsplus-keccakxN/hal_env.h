@@ -29,6 +29,6 @@
 #define SEP ;
 
 #define ASM_LOAD(dst,symbol) 	\
-  adrp dst, symbol ; add  dst, dst, :lo12:symbol;
+  adrp dst, symbol@PAGE ; add  dst, dst, symbol@PAGE;
 
 #endif /* HAL_ENV_H */

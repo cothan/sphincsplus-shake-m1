@@ -32,11 +32,12 @@ import shutil
 import os
 import sys
 
-cores = ["X1", "A78", "A55", "X2", "A710", "A510"]
+# cores = ["X1", "A78", "A55", "X2", "A710", "A510", "M1"]
+cores = ["M1"]
 fns = ['shake']
 options = ["f", "s"]
 sizes = [128, 192, 256]
-thashes = ['robust', 'simple']
+thashes = ['simple']
 implementations = ['x3', 'x4', 'x5']
 bindir = "bin/"
 
@@ -49,7 +50,7 @@ def make(fn, opt, size, thash, impl, core, bindir):
 
     if core in ["X1", "A78", "A55"]:
         platform = "v8"
-    elif core in ["X2", "A710", "A510"]:
+    elif core in ["X2", "A710", "A510", "M1"]:
         platform ="v84"
     else:
         raise Exception()
@@ -65,6 +66,7 @@ def make(fn, opt, size, thash, impl, core, bindir):
 
     subprocess.run(["make", "clean"] + overrides,
         stdout=subprocess.DEVNULL, stderr=sys.stderr, check=True)
+    print("make ", overrides)
     subprocess.run(["make"] + overrides,
         stdout=subprocess.DEVNULL, stderr=sys.stderr, check=True)
 

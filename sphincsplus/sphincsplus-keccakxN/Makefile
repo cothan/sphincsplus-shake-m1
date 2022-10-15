@@ -24,16 +24,16 @@
 #
 
 PARAMS ?= sphincs-shake-128f
-THASH ?= robust
+THASH ?= simple
 
-CC=aarch64-none-linux-gnu-gcc
+CC=clang
 LD=$(CC)
 
 
-CORE     ?= X2
+CORE     ?= M1
 
-# PMU / PERF
-CYCLES?= PERF
+# PMU / PERF / EXTERNAL_CYCLES
+CYCLES?= EXTERNAL_CYCLES
 
 ifeq ($(CYCLES),PMU)
 	CFLAGS += -DPMU_CYCLES
@@ -47,6 +47,11 @@ ifeq ($(CYCLES),NO)
 	CFLAGS += -DNO_CYCLES
 endif
 
+ifeq ($(CYCLES),EXTERNAL_CYCLES)
+	CFLAGS += -DEXTERNAL_CYCLES
+endif
+
+
 DUMMY?=0
 WAY?=4
 
@@ -55,6 +60,10 @@ ifeq ($(DUMMY),0)
 ifeq ($(WAY),5)
 
 ifeq ($(CORE),X2)
+	KECCAK_X1_IMPL?= keccak_f1600_x1_scalar_asm_v5
+	KECCAK_X_IMPL?= keccak_f1600_x5_hybrid_asm_v8p
+	PLATFORM = v84
+else ifeq ($(CORE),M1)
 	KECCAK_X1_IMPL?= keccak_f1600_x1_scalar_asm_v5
 	KECCAK_X_IMPL?= keccak_f1600_x5_hybrid_asm_v8p
 	PLATFORM = v84
@@ -86,6 +95,10 @@ ifeq ($(CORE),X2)
 	KECCAK_X1_IMPL?= keccak_f1600_x1_scalar_asm_v5
 	KECCAK_X_IMPL?= keccak_f1600_x4_hybrid_asm_v4
 	PLATFORM = v84
+else ifeq ($(CORE),M1)
+	KECCAK_X1_IMPL?= keccak_f1600_x1_scalar_asm_v5
+	KECCAK_X_IMPL?= keccak_f1600_x4_hybrid_asm_v4
+	PLATFORM = v84
 else ifeq ($(CORE),A710)
 	KECCAK_X1_IMPL?= keccak_f1600_x1_scalar_asm_v5
 	KECCAK_X_IMPL?= keccak_f1600_x4_hybrid_asm_v2
@@ -111,6 +124,10 @@ endif
 else ifeq ($(WAY),3)
 
 ifeq ($(CORE),X2)
+	KECCAK_X1_IMPL?= keccak_f1600_x1_scalar_asm_v5
+	KECCAK_X_IMPL?= keccak_f1600_x3_hybrid_asm_v6
+	PLATFORM = v84
+else ifeq ($(CORE),M1)
 	KECCAK_X1_IMPL?= keccak_f1600_x1_scalar_asm_v5
 	KECCAK_X_IMPL?= keccak_f1600_x3_hybrid_asm_v6
 	PLATFORM = v84
@@ -141,6 +158,10 @@ endif
 else
 
 ifeq ($(CORE),X2)
+	KECCAK_X1_IMPL?= keccak_f1600_dummy
+	KECCAK_X_IMPL?= keccak_f1600_dummy
+	PLATFORM = v84
+else ifeq ($(CORE),M1)
 	KECCAK_X1_IMPL?= keccak_f1600_dummy
 	KECCAK_X_IMPL?= keccak_f1600_dummy
 	PLATFORM = v84
@@ -180,7 +201,7 @@ CFLAGS += -I. -flto -fpic  -Wall -Wextra -Wpedantic -Wmissing-prototypes -O3 \
 		  -DKECCAK_X1_IMPL=$(KECCAK_X1_IMPL) \
 		  -DKECCAK_X_IMPL=$(KECCAK_X_IMPL) \
 		  $(EXTRA_CFLAGS)
-LDFLAGS = -static -flto
+LDFLAGS = -flto
 
 SRC_DIR=.
 BUILD_DIR=build
@@ -196,7 +217,7 @@ endif
 ASM_OBJ_FILES=$(patsubst %.s, $(BUILD_DIR)/%.s.o, $(ASM_SRC_FILES))
 
 C_SRC_FILES = address.c fips202.c fips202x.c fors.c hash_shake.c hash_shakex.c merkle.c sign.c utils.c utilsx.c wots.c thash_shake_$(THASH)x.c thash_shake_$(THASH).c
-C_SRC_FILES_BENCH=$(C_SRC_FILES) test/benchmark.c test/randombytes.c test/cycles.c
+C_SRC_FILES_BENCH=$(C_SRC_FILES) test/benchmark.c test/randombytes.c test/m1cycles.c test/cycles.c 
 C_OBJ_FILES_BENCH=$(patsubst %.c, $(BUILD_DIR)/%.c.o, $(C_SRC_FILES_BENCH))
 OBJ_FILES_BENCH=$(ASM_OBJ_FILES) $(C_OBJ_FILES_BENCH)
 
@@ -204,7 +225,7 @@ C_SRC_FILES_FUNCTEST=$(C_SRC_FILES) test/functest.c test/randombytes.c
 C_OBJ_FILES_FUNCTEST=$(patsubst %.c, $(BUILD_DIR)/%.c.o, $(C_SRC_FILES_FUNCTEST))
 OBJ_FILES_FUNCTEST=$(ASM_OBJ_FILES) $(C_OBJ_FILES_FUNCTEST)
 
-C_SRC_FILES_TEST=$(C_SRC_FILES) test/thashx.c test/randombytes.c test/cycles.c
+C_SRC_FILES_TEST=$(C_SRC_FILES) test/thashx.c test/randombytes.c test/m1cycles.c test/cycles.c
 C_OBJ_FILES_TEST=$(patsubst %.c, $(BUILD_DIR)/%.c.o, $(C_SRC_FILES_TEST))
 OBJ_FILES_TEST=$(ASM_OBJ_FILES) $(C_OBJ_FILES_TEST)
 
