@@ -17,7 +17,7 @@
 #include "cycles.h"
 
 #define SPX_MLEN 32
-#define NTESTS 10
+#define NTESTS 100
 
 static void wots_gen_pkx(unsigned char *pk, const spx_ctx *ctx,
                          uint32_t addr[8]);

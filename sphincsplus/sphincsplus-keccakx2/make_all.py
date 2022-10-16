@@ -32,12 +32,12 @@ import shutil
 import os
 import sys
 
-cores = ["X1", "A78", "A55", "X2", "A710", "A510"]
+cores = ["M1"]
 fns = ['shake']
 options = ["f", "s"]
 sizes = [128, 192, 256]
-thashes = ['robust', 'simple']
-keccak_var = ["COTHANV8", "C", "BAS"]
+thashes = ['simple']
+keccak_var = ["COTHANV8", "BAS", "COTHANV84"]
 
 def nameFor(fn, opt, size, thash, var):
     return f"sphincs-{fn}-{size}{opt}-{thash}_{var}"
@@ -52,7 +52,7 @@ def make(fn, opt, size, thash, core, bindir, keccak_x2):
         # Skip BAS' code on v8-A
         if keccak_x2 == "BAS":
             return
-    elif core in ["X2", "A710", "A510"]:
+    elif core in ["X2", "A710", "A510", "M1"]:
         platform ="v84"
     else:
         raise Exception()

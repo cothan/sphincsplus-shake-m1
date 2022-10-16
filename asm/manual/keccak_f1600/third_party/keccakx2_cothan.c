@@ -19,7 +19,10 @@ limitations under the License.
 #include "../keccak_f1600_variants.h"
 
 #define NROUNDS 24
+
+#ifndef SHA3
 #define SHA3 0
+#endif
 
 #define SHAKE128_RATE 168
 #define SHAKE256_RATE 136

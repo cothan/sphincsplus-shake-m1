@@ -1,13 +1,14 @@
 PARAMS = sphincs-shake-128f
-THASH = robust
+THASH = simple
 
-CC=aarch64-none-linux-gnu-gcc
+CC=clang
 LD=$(CC)
 
 PLATFORM ?= v84
 
-# PMU / PERF
-CYCLES ?= PERF
+# PMU / PERF / EXTERNAL_CYCLES
+CYCLES?= EXTERNAL_CYCLES
+
 ifeq ($(CYCLES),PMU)
 	CFLAGS += -DPMU_CYCLES
 endif
@@ -20,9 +21,13 @@ ifeq ($(CYCLES),NO)
 	CFLAGS += -DNO_CYCLES
 endif
 
+ifeq ($(CYCLES),EXTERNAL_CYCLES)
+	CFLAGS += -DEXTERNAL_CYCLES
+endif
+
 
 CFLAGS += -I. -flto -fpic -Wall -Wextra -Wpedantic -Wmissing-prototypes -O3 -std=c99 -fomit-frame-pointer -DPARAMS=$(PARAMS) $(EXTRA_CFLAGS)
-LDFLAGS = -static -flto
+LDFLAGS = -flto
 
 SRC_DIR=.
 BUILD_DIR=build
@@ -48,7 +53,7 @@ else ifeq ($(KECCAK_X2_IMPL),COTHANV8)
 else ifeq ($(KECCAK_X2_IMPL),COTHANV84)
 	ASM_SRC_FILES=
 	C_SRC_FILES=keccak_f1600_x2/keccakx2_cothan.c
-	CFLAGS += -DKECCAK_X2_IMPL_COTHAN
+	CFLAGS += -DKECCAK_X2_IMPL_COTHAN -DSHA3=1
 	CFLAGS_COTHAN= $(CFLAGS) -march=armv8.4-a+crypto+sha3
 endif
 ifeq ($(PLATFORM),v84)
@@ -59,7 +64,7 @@ endif
 ASM_OBJ_FILES=$(patsubst %.s, $(BUILD_DIR)/%.s.o, $(ASM_SRC_FILES))
 
 C_SRC_FILES+= address.c fips202.c fips202x2.c fors.c hash_shake.c hash_shakex2.c merkle.c sign.c utils.c utilsx2.c wots.c thash_shake_$(THASH)x2.c
-C_SRC_FILES_BENCH=$(C_SRC_FILES) test/benchmark.c test/randombytes.c test/cycles.c
+C_SRC_FILES_BENCH=$(C_SRC_FILES) test/benchmark.c test/randombytes.c test/m1cycles.c test/cycles.c
 C_OBJ_FILES_BENCH=$(patsubst %.c, $(BUILD_DIR)/%.c.o, $(C_SRC_FILES_BENCH))
 OBJ_FILES_BENCH=$(ASM_OBJ_FILES) $(C_OBJ_FILES_BENCH)
 

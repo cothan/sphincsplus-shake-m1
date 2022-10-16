@@ -1,0 +1,306 @@
+===========================================
+bench_M1_sphincs-shake-128f-simple_BAS
+Setup counter
+Parameters: n = 16, h = 66, d = 22, b = 6, k = 33, w = 16
+Running 100 iterations.
+thash                avg.        0.41 us (0.00 sec); median            505 cycles,      1x:            505 cycles
+f1600x2              avg.        0.25 us (0.00 sec); median            485 cycles,      1x:            485 cycles
+thashx2              avg.        0.20 us (0.00 sec); median            498 cycles,      1x:            498 cycles
+Generating keypair.. avg.      377.42 us (0.00 sec); median      1,129,087 cycles,      1x:      1,129,087 cycles
+  - WOTS pk gen 2x.. avg.       91.87 us (0.00 sec); median        281,809 cycles,      4x:      1,127,236 cycles
+Signing..            avg.     8451.05 us (0.01 sec); median     26,495,321 cycles,      1x:     26,495,321 cycles
+  - FORS signing..   avg.      526.05 us (0.00 sec); median      1,635,576 cycles,      1x:      1,635,576 cycles
+  - WOTS pk gen x2.. avg.       92.86 us (0.00 sec); median        281,753 cycles,     88x:     24,794,264 cycles
+Verifying..          avg.      573.01 us (0.00 sec); median      1,778,214 cycles,      1x:      1,778,214 cycles
+Signature size: 17088 (16.69 KiB)
+Public key size: 32 (0.03 KiB)
+Secret key size: 64 (0.06 KiB)
+===========================================
+bench_M1_sphincs-shake-128f-simple_COTHANV8
+Setup counter
+Parameters: n = 16, h = 66, d = 22, b = 6, k = 33, w = 16
+Running 100 iterations.
+thash                avg.        0.39 us (0.00 sec); median          1,036 cycles,      1x:          1,036 cycles
+f1600x2              avg.        0.33 us (0.00 sec); median          1,018 cycles,      1x:          1,018 cycles
+thashx2              avg.        0.33 us (0.00 sec); median          1,023 cycles,      1x:          1,023 cycles
+Generating keypair.. avg.      749.12 us (0.00 sec); median      2,324,013 cycles,      1x:      2,324,013 cycles
+  - WOTS pk gen 2x.. avg.      189.34 us (0.00 sec); median        579,982 cycles,      4x:      2,319,928 cycles
+Signing..            avg.    17369.97 us (0.02 sec); median     54,452,198 cycles,      1x:     54,452,198 cycles
+  - FORS signing..   avg.     1062.50 us (0.00 sec); median      3,310,190 cycles,      1x:      3,310,190 cycles
+  - WOTS pk gen x2.. avg.      189.05 us (0.00 sec); median        579,987 cycles,     88x:     51,038,856 cycles
+Verifying..          avg.     1114.88 us (0.00 sec); median      3,469,774 cycles,      1x:      3,469,774 cycles
+Signature size: 17088 (16.69 KiB)
+Public key size: 32 (0.03 KiB)
+Secret key size: 64 (0.06 KiB)
+===========================================
+bench_M1_sphincs-shake-128f-simple_COTHANV84
+Setup counter
+Parameters: n = 16, h = 66, d = 22, b = 6, k = 33, w = 16
+Running 100 iterations.
+thash                avg.        0.24 us (0.00 sec); median            583 cycles,      1x:            583 cycles
+f1600x2              avg.        0.19 us (0.00 sec); median            548 cycles,      1x:            548 cycles
+thashx2              avg.        0.19 us (0.00 sec); median            573 cycles,      1x:            573 cycles
+Generating keypair.. avg.      423.04 us (0.00 sec); median      1,301,976 cycles,      1x:      1,301,976 cycles
+  - WOTS pk gen 2x.. avg.      104.99 us (0.00 sec); median        325,024 cycles,      4x:      1,300,096 cycles
+Signing..            avg.     9736.07 us (0.01 sec); median     30,520,265 cycles,      1x:     30,520,265 cycles
+  - FORS signing..   avg.      604.02 us (0.00 sec); median      1,869,720 cycles,      1x:      1,869,720 cycles
+  - WOTS pk gen x2.. avg.      105.86 us (0.00 sec); median        325,049 cycles,     88x:     28,604,312 cycles
+Verifying..          avg.      665.31 us (0.00 sec); median      2,059,559 cycles,      1x:      2,059,559 cycles
+Signature size: 17088 (16.69 KiB)
+Public key size: 32 (0.03 KiB)
+Secret key size: 64 (0.06 KiB)
+===========================================
+bench_M1_sphincs-shake-128s-simple_BAS
+Setup counter
+Parameters: n = 16, h = 63, d = 7, b = 12, k = 14, w = 16
+Running 100 iterations.
+thash                avg.        0.20 us (0.00 sec); median            504 cycles,      1x:            504 cycles
+f1600x2              avg.        0.17 us (0.00 sec); median            485 cycles,      1x:            485 cycles
+thashx2              avg.        0.16 us (0.00 sec); median            497 cycles,      1x:            497 cycles
+Generating keypair.. avg.    23020.83 us (0.02 sec); median     72,237,725 cycles,      1x:     72,237,725 cycles
+  - WOTS pk gen 2x.. avg.       93.44 us (0.00 sec); median        281,673 cycles,    256x:     72,108,288 cycles
+Signing..            avg.   175691.34 us (0.18 sec); median    549,103,104 cycles,      1x:    549,103,104 cycles
+  - FORS signing..   avg.    13852.92 us (0.01 sec); median     43,410,966 cycles,      1x:     43,410,966 cycles
+  - WOTS pk gen x2.. avg.       92.84 us (0.00 sec); median        281,574 cycles,   1792x:    504,580,608 cycles
+Verifying..          avg.      217.17 us (0.00 sec); median        667,245 cycles,      1x:        667,245 cycles
+Signature size: 7856 (7.67 KiB)
+Public key size: 32 (0.03 KiB)
+Secret key size: 64 (0.06 KiB)
+===========================================
+bench_M1_sphincs-shake-128s-simple_COTHANV8
+Setup counter
+Parameters: n = 16, h = 63, d = 7, b = 12, k = 14, w = 16
+Running 100 iterations.
+thash                avg.        0.37 us (0.00 sec); median          1,036 cycles,      1x:          1,036 cycles
+f1600x2              avg.        0.33 us (0.00 sec); median          1,018 cycles,      1x:          1,018 cycles
+thashx2              avg.        0.33 us (0.00 sec); median          1,023 cycles,      1x:          1,023 cycles
+Generating keypair.. avg.    47429.30 us (0.05 sec); median    148,717,769 cycles,      1x:    148,717,769 cycles
+  - WOTS pk gen 2x.. avg.      189.72 us (0.00 sec); median        579,953 cycles,    256x:    148,467,968 cycles
+Signing..            avg.   360277.96 us (0.36 sec); median  1,129,905,348 cycles,      1x:  1,129,905,348 cycles
+  - FORS signing..   avg.    28334.15 us (0.03 sec); median     88,826,468 cycles,      1x:     88,826,468 cycles
+  - WOTS pk gen x2.. avg.      189.43 us (0.00 sec); median        580,065 cycles,   1792x:  1,039,476,480 cycles
+Verifying..          avg.      417.70 us (0.00 sec); median      1,290,427 cycles,      1x:      1,290,427 cycles
+Signature size: 7856 (7.67 KiB)
+Public key size: 32 (0.03 KiB)
+Secret key size: 64 (0.06 KiB)
+===========================================
+bench_M1_sphincs-shake-128s-simple_COTHANV84
+Setup counter
+Parameters: n = 16, h = 63, d = 7, b = 12, k = 14, w = 16
+Running 100 iterations.
+thash                avg.        0.40 us (0.00 sec); median            583 cycles,      1x:            583 cycles
+f1600x2              avg.        0.25 us (0.00 sec); median            548 cycles,      1x:            548 cycles
+thashx2              avg.        0.21 us (0.00 sec); median            573 cycles,      1x:            573 cycles
+Generating keypair.. avg.    26568.59 us (0.03 sec); median     83,297,369 cycles,      1x:     83,297,369 cycles
+  - WOTS pk gen 2x.. avg.      107.32 us (0.00 sec); median        324,918 cycles,    256x:     83,179,008 cycles
+Signing..            avg.   201970.27 us (0.20 sec); median    632,847,269 cycles,      1x:    632,847,269 cycles
+  - FORS signing..   avg.    15874.13 us (0.02 sec); median     49,746,312 cycles,      1x:     49,746,312 cycles
+  - WOTS pk gen x2.. avg.      106.74 us (0.00 sec); median        325,058 cycles,   1792x:    582,503,936 cycles
+Verifying..          avg.      223.91 us (0.00 sec); median        689,785 cycles,      1x:        689,785 cycles
+Signature size: 7856 (7.67 KiB)
+Public key size: 32 (0.03 KiB)
+Secret key size: 64 (0.06 KiB)
+===========================================
+bench_M1_sphincs-shake-192f-simple_BAS
+Setup counter
+Parameters: n = 24, h = 66, d = 22, b = 8, k = 33, w = 16
+Running 100 iterations.
+thash                avg.        0.19 us (0.00 sec); median            504 cycles,      1x:            504 cycles
+f1600x2              avg.        0.16 us (0.00 sec); median            485 cycles,      1x:            485 cycles
+thashx2              avg.        0.16 us (0.00 sec); median            498 cycles,      1x:            498 cycles
+Generating keypair.. avg.      536.46 us (0.00 sec); median      1,652,872 cycles,      1x:      1,652,872 cycles
+  - WOTS pk gen 2x.. avg.      135.82 us (0.00 sec); median        412,634 cycles,      4x:      1,650,536 cycles
+Signing..            avg.    13663.11 us (0.01 sec); median     42,804,926 cycles,      1x:     42,804,926 cycles
+  - FORS signing..   avg.     2053.71 us (0.00 sec); median      6,423,007 cycles,      1x:      6,423,007 cycles
+  - WOTS pk gen x2.. avg.      134.77 us (0.00 sec); median        412,780 cycles,     88x:     36,324,640 cycles
+Verifying..          avg.      796.99 us (0.00 sec); median      2,480,867 cycles,      1x:      2,480,867 cycles
+Signature size: 35664 (34.83 KiB)
+Public key size: 48 (0.05 KiB)
+Secret key size: 96 (0.09 KiB)
+===========================================
+bench_M1_sphincs-shake-192f-simple_COTHANV8
+Setup counter
+Parameters: n = 24, h = 66, d = 22, b = 8, k = 33, w = 16
+Running 100 iterations.
+thash                avg.        0.39 us (0.00 sec); median          1,040 cycles,      1x:          1,040 cycles
+f1600x2              avg.        0.33 us (0.00 sec); median          1,018 cycles,      1x:          1,018 cycles
+thashx2              avg.        0.33 us (0.00 sec); median          1,028 cycles,      1x:          1,028 cycles
+Generating keypair.. avg.     1096.58 us (0.00 sec); median      3,408,174 cycles,      1x:      3,408,174 cycles
+  - WOTS pk gen 2x.. avg.      275.80 us (0.00 sec); median        851,004 cycles,      4x:      3,404,016 cycles
+Signing..            avg.    28123.05 us (0.03 sec); median     88,176,402 cycles,      1x:     88,176,402 cycles
+  - FORS signing..   avg.     4205.11 us (0.00 sec); median     13,167,583 cycles,      1x:     13,167,583 cycles
+  - WOTS pk gen x2.. avg.      276.63 us (0.00 sec); median        851,014 cycles,     88x:     74,889,232 cycles
+Verifying..          avg.     1666.07 us (0.00 sec); median      5,161,975 cycles,      1x:      5,161,975 cycles
+Signature size: 35664 (34.83 KiB)
+Public key size: 48 (0.05 KiB)
+Secret key size: 96 (0.09 KiB)
+===========================================
+bench_M1_sphincs-shake-192f-simple_COTHANV84
+Setup counter
+Parameters: n = 24, h = 66, d = 22, b = 8, k = 33, w = 16
+Running 100 iterations.
+thash                avg.        0.21 us (0.00 sec); median            581 cycles,      1x:            581 cycles
+f1600x2              avg.        0.18 us (0.00 sec); median            549 cycles,      1x:            549 cycles
+thashx2              avg.        0.19 us (0.00 sec); median            573 cycles,      1x:            573 cycles
+Generating keypair.. avg.      615.65 us (0.00 sec); median      1,905,175 cycles,      1x:      1,905,175 cycles
+  - WOTS pk gen 2x.. avg.      156.10 us (0.00 sec); median        475,690 cycles,      4x:      1,902,760 cycles
+Signing..            avg.    15736.81 us (0.02 sec); median     49,318,527 cycles,      1x:     49,318,527 cycles
+  - FORS signing..   avg.     2367.80 us (0.00 sec); median      7,402,772 cycles,      1x:      7,402,772 cycles
+  - WOTS pk gen x2.. avg.      156.03 us (0.00 sec); median        475,721 cycles,     88x:     41,863,448 cycles
+Verifying..          avg.      936.78 us (0.00 sec); median      2,911,750 cycles,      1x:      2,911,750 cycles
+Signature size: 35664 (34.83 KiB)
+Public key size: 48 (0.05 KiB)
+Secret key size: 96 (0.09 KiB)
+===========================================
+bench_M1_sphincs-shake-192s-simple_BAS
+Setup counter
+Parameters: n = 24, h = 63, d = 7, b = 14, k = 17, w = 16
+Running 100 iterations.
+thash                avg.        0.20 us (0.00 sec); median            504 cycles,      1x:            504 cycles
+f1600x2              avg.        0.16 us (0.00 sec); median            485 cycles,      1x:            485 cycles
+thashx2              avg.        0.16 us (0.00 sec); median            498 cycles,      1x:            498 cycles
+Generating keypair.. avg.    33732.01 us (0.03 sec); median    105,747,537 cycles,      1x:    105,747,537 cycles
+  - WOTS pk gen 2x.. avg.      137.89 us (0.00 sec); median        412,760 cycles,    256x:    105,666,560 cycles
+Signing..            avg.   303409.24 us (0.30 sec); median    950,813,481 cycles,      1x:    950,813,481 cycles
+  - FORS signing..   avg.    67118.70 us (0.07 sec); median    210,347,090 cycles,      1x:    210,347,090 cycles
+  - WOTS pk gen x2.. avg.      135.83 us (0.00 sec); median        413,065 cycles,   1792x:    740,212,480 cycles
+Verifying..          avg.      294.71 us (0.00 sec); median        908,505 cycles,      1x:        908,505 cycles
+Signature size: 16224 (15.84 KiB)
+Public key size: 48 (0.05 KiB)
+Secret key size: 96 (0.09 KiB)
+===========================================
+bench_M1_sphincs-shake-192s-simple_COTHANV8
+Setup counter
+Parameters: n = 24, h = 63, d = 7, b = 14, k = 17, w = 16
+Running 100 iterations.
+thash                avg.        0.41 us (0.00 sec); median          1,041 cycles,      1x:          1,041 cycles
+f1600x2              avg.        0.35 us (0.00 sec); median          1,018 cycles,      1x:          1,018 cycles
+thashx2              avg.        0.33 us (0.00 sec); median          1,028 cycles,      1x:          1,028 cycles
+Generating keypair.. avg.    69603.31 us (0.07 sec); median    218,104,463 cycles,      1x:    218,104,463 cycles
+  - WOTS pk gen 2x.. avg.      277.65 us (0.00 sec); median        851,032 cycles,    256x:    217,864,192 cycles
+Signing..            avg.   625104.99 us (0.63 sec); median  1,959,599,141 cycles,      1x:  1,959,599,141 cycles
+  - FORS signing..   avg.   137985.55 us (0.14 sec); median    432,704,395 cycles,      1x:    432,704,395 cycles
+  - WOTS pk gen x2.. avg.      277.10 us (0.00 sec); median        851,291 cycles,   1792x:  1,525,513,472 cycles
+Verifying..          avg.      596.82 us (0.00 sec); median      1,849,120 cycles,      1x:      1,849,120 cycles
+Signature size: 16224 (15.84 KiB)
+Public key size: 48 (0.05 KiB)
+Secret key size: 96 (0.09 KiB)
+===========================================
+bench_M1_sphincs-shake-192s-simple_COTHANV84
+Setup counter
+Parameters: n = 24, h = 63, d = 7, b = 14, k = 17, w = 16
+Running 100 iterations.
+thash                avg.        0.37 us (0.00 sec); median            581 cycles,      1x:            581 cycles
+f1600x2              avg.        0.22 us (0.00 sec); median            549 cycles,      1x:            549 cycles
+thashx2              avg.        0.19 us (0.00 sec); median            573 cycles,      1x:            573 cycles
+Generating keypair.. avg.    38882.04 us (0.04 sec); median    121,909,064 cycles,      1x:    121,909,064 cycles
+  - WOTS pk gen 2x.. avg.      157.01 us (0.00 sec); median        475,819 cycles,    256x:    121,809,664 cycles
+Signing..            avg.   350653.59 us (0.35 sec); median  1,096,255,236 cycles,      1x:  1,096,255,236 cycles
+  - FORS signing..   avg.    77318.67 us (0.08 sec); median    242,699,480 cycles,      1x:    242,699,480 cycles
+  - WOTS pk gen x2.. avg.      155.28 us (0.00 sec); median        476,006 cycles,   1792x:    853,002,752 cycles
+Verifying..          avg.      327.11 us (0.00 sec); median      1,011,571 cycles,      1x:      1,011,571 cycles
+Signature size: 16224 (15.84 KiB)
+Public key size: 48 (0.05 KiB)
+Secret key size: 96 (0.09 KiB)
+===========================================
+bench_M1_sphincs-shake-256f-simple_BAS
+Setup counter
+Parameters: n = 32, h = 68, d = 17, b = 9, k = 35, w = 16
+Running 100 iterations.
+thash                avg.        0.20 us (0.00 sec); median            504 cycles,      1x:            504 cycles
+f1600x2              avg.        0.16 us (0.00 sec); median            485 cycles,      1x:            485 cycles
+thashx2              avg.        0.16 us (0.00 sec); median            501 cycles,      1x:            501 cycles
+Generating keypair.. avg.     1437.67 us (0.00 sec); median      4,477,879 cycles,      1x:      4,477,879 cycles
+  - WOTS pk gen 2x.. avg.      178.75 us (0.00 sec); median        547,701 cycles,      8x:      4,381,608 cycles
+Signing..            avg.    28711.89 us (0.03 sec); median     89,998,841 cycles,      1x:     89,998,841 cycles
+  - FORS signing..   avg.     4417.93 us (0.00 sec); median     13,838,876 cycles,      1x:     13,838,876 cycles
+  - WOTS pk gen x2.. avg.      177.92 us (0.00 sec); median        547,557 cycles,    136x:     74,467,752 cycles
+Verifying..          avg.      810.56 us (0.00 sec); median      2,518,872 cycles,      1x:      2,518,872 cycles
+Signature size: 49856 (48.69 KiB)
+Public key size: 64 (0.06 KiB)
+Secret key size: 128 (0.12 KiB)
+===========================================
+bench_M1_sphincs-shake-256f-simple_COTHANV8
+Setup counter
+Parameters: n = 32, h = 68, d = 17, b = 9, k = 35, w = 16
+Running 100 iterations.
+thash                avg.        0.38 us (0.00 sec); median          1,038 cycles,      1x:          1,038 cycles
+f1600x2              avg.        0.33 us (0.00 sec); median          1,018 cycles,      1x:          1,018 cycles
+thashx2              avg.        0.33 us (0.00 sec); median          1,032 cycles,      1x:          1,032 cycles
+Generating keypair.. avg.     2909.10 us (0.00 sec); median      9,099,198 cycles,      1x:      9,099,198 cycles
+  - WOTS pk gen 2x.. avg.      365.25 us (0.00 sec); median      1,126,741 cycles,      8x:      9,013,928 cycles
+Signing..            avg.    58286.93 us (0.06 sec); median    182,738,233 cycles,      1x:    182,738,233 cycles
+  - FORS signing..   avg.     8947.88 us (0.01 sec); median     28,037,809 cycles,      1x:     28,037,809 cycles
+  - WOTS pk gen x2.. avg.      366.05 us (0.00 sec); median      1,126,745 cycles,    136x:    153,237,320 cycles
+Verifying..          avg.     1746.17 us (0.00 sec); median      5,435,520 cycles,      1x:      5,435,520 cycles
+Signature size: 49856 (48.69 KiB)
+Public key size: 64 (0.06 KiB)
+Secret key size: 128 (0.12 KiB)
+===========================================
+bench_M1_sphincs-shake-256f-simple_COTHANV84
+Setup counter
+Parameters: n = 32, h = 68, d = 17, b = 9, k = 35, w = 16
+Running 100 iterations.
+thash                avg.        0.21 us (0.00 sec); median            578 cycles,      1x:            578 cycles
+f1600x2              avg.        0.18 us (0.00 sec); median            548 cycles,      1x:            548 cycles
+thashx2              avg.        0.19 us (0.00 sec); median            573 cycles,      1x:            573 cycles
+Generating keypair.. avg.     1634.50 us (0.00 sec); median      5,093,679 cycles,      1x:      5,093,679 cycles
+  - WOTS pk gen 2x.. avg.      205.78 us (0.00 sec); median        628,432 cycles,      8x:      5,027,456 cycles
+Signing..            avg.    32661.20 us (0.03 sec); median    102,371,159 cycles,      1x:    102,371,159 cycles
+  - FORS signing..   avg.     5043.12 us (0.01 sec); median     15,774,035 cycles,      1x:     15,774,035 cycles
+  - WOTS pk gen x2.. avg.      204.90 us (0.00 sec); median        628,400 cycles,    136x:     85,462,400 cycles
+Verifying..          avg.      984.36 us (0.00 sec); median      3,063,758 cycles,      1x:      3,063,758 cycles
+Signature size: 49856 (48.69 KiB)
+Public key size: 64 (0.06 KiB)
+Secret key size: 128 (0.12 KiB)
+===========================================
+bench_M1_sphincs-shake-256s-simple_BAS
+Setup counter
+Parameters: n = 32, h = 64, d = 8, b = 14, k = 22, w = 16
+Running 100 iterations.
+thash                avg.        0.19 us (0.00 sec); median            504 cycles,      1x:            504 cycles
+f1600x2              avg.        0.16 us (0.00 sec); median            485 cycles,      1x:            485 cycles
+thashx2              avg.        0.16 us (0.00 sec); median            503 cycles,      1x:            503 cycles
+Generating keypair.. avg.    22397.40 us (0.02 sec); median     70,221,430 cycles,      1x:     70,221,430 cycles
+  - WOTS pk gen 2x.. avg.      181.96 us (0.00 sec); median        548,368 cycles,    128x:     70,191,104 cycles
+Signing..            avg.   267842.09 us (0.27 sec); median    839,751,820 cycles,      1x:    839,751,820 cycles
+  - FORS signing..   avg.    88492.98 us (0.09 sec); median    277,505,767 cycles,      1x:    277,505,767 cycles
+  - WOTS pk gen x2.. avg.      179.55 us (0.00 sec); median        548,820 cycles,   1024x:    561,991,680 cycles
+Verifying..          avg.      426.61 us (0.00 sec); median      1,321,346 cycles,      1x:      1,321,346 cycles
+Signature size: 29792 (29.09 KiB)
+Public key size: 64 (0.06 KiB)
+Secret key size: 128 (0.12 KiB)
+===========================================
+bench_M1_sphincs-shake-256s-simple_COTHANV8
+Setup counter
+Parameters: n = 32, h = 64, d = 8, b = 14, k = 22, w = 16
+Running 100 iterations.
+thash                avg.        0.35 us (0.00 sec); median          1,038 cycles,      1x:          1,038 cycles
+f1600x2              avg.        0.33 us (0.00 sec); median          1,018 cycles,      1x:          1,018 cycles
+thashx2              avg.        0.33 us (0.00 sec); median          1,032 cycles,      1x:          1,032 cycles
+Generating keypair.. avg.    46058.24 us (0.05 sec); median    144,343,721 cycles,      1x:    144,343,721 cycles
+  - WOTS pk gen 2x.. avg.      365.59 us (0.00 sec); median      1,126,773 cycles,    128x:    144,226,944 cycles
+Signing..            avg.   548084.76 us (0.55 sec); median  1,717,978,680 cycles,      1x:  1,717,978,680 cycles
+  - FORS signing..   avg.   179458.73 us (0.18 sec); median    563,090,697 cycles,      1x:    563,090,697 cycles
+  - WOTS pk gen x2.. avg.      370.22 us (0.00 sec); median      1,126,846 cycles,   1024x:  1,153,890,304 cycles
+Verifying..          avg.      875.74 us (0.00 sec); median      2,712,724 cycles,      1x:      2,712,724 cycles
+Signature size: 29792 (29.09 KiB)
+Public key size: 64 (0.06 KiB)
+Secret key size: 128 (0.12 KiB)
+===========================================
+bench_M1_sphincs-shake-256s-simple_COTHANV84
+Setup counter
+Parameters: n = 32, h = 64, d = 8, b = 14, k = 22, w = 16
+Running 100 iterations.
+thash                avg.        0.53 us (0.00 sec); median            578 cycles,      1x:            578 cycles
+f1600x2              avg.        0.28 us (0.00 sec); median            549 cycles,      1x:            549 cycles
+thashx2              avg.        0.21 us (0.00 sec); median            573 cycles,      1x:            573 cycles
+Generating keypair.. avg.    25668.79 us (0.03 sec); median     80,491,321 cycles,      1x:     80,491,321 cycles
+  - WOTS pk gen 2x.. avg.      206.33 us (0.00 sec); median        628,470 cycles,    128x:     80,444,160 cycles
+Signing..            avg.   306366.10 us (0.31 sec); median    960,379,124 cycles,      1x:    960,379,124 cycles
+  - FORS signing..   avg.   100829.89 us (0.10 sec); median    316,318,547 cycles,      1x:    316,318,547 cycles
+  - WOTS pk gen x2.. avg.      207.43 us (0.00 sec); median        628,619 cycles,   1024x:    643,705,856 cycles
+Verifying..          avg.      491.67 us (0.00 sec); median      1,515,601 cycles,      1x:      1,515,601 cycles
+Signature size: 29792 (29.09 KiB)
+Public key size: 64 (0.06 KiB)
+Secret key size: 128 (0.12 KiB)

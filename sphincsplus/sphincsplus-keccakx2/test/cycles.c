@@ -114,7 +114,26 @@ int is_cpucycles_overflow(void){
 
 #elif defined(EXTERNAL_CYCLES)
 
-// nothing to do
+// M1 Cycle count
+#include "m1cycles.h"
+void enable_cyclecounter() {
+    setup_rdtsc();
+}
+
+void disable_cyclecounter() {
+    return;
+}
+
+uint64_t get_cyclecounter() {
+    return rdtsc();
+}
+
+void reset_cpucycles(void) {
+    return;
+}
+int is_cpucycles_overflow(void){
+    return 0;
+}
 
 #else /* NO_CYCLES */
 
