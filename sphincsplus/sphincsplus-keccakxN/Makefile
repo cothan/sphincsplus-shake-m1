@@ -65,7 +65,7 @@ ifeq ($(CORE),X2)
 	PLATFORM = v84
 else ifeq ($(CORE),M1)
 	KECCAK_X1_IMPL?= keccak_f1600_x1_scalar_asm_v5
-	KECCAK_X_IMPL?= keccak_f1600_x5_hybrid_asm_v8p
+	KECCAK_X_IMPL?= keccak_f1600_x5_hybrid_asm_v8
 	PLATFORM = v84
 else ifeq ($(CORE),A710)
 	KECCAK_X1_IMPL?= keccak_f1600_x1_scalar_asm_v5
